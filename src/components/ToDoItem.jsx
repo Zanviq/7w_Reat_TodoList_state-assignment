@@ -1,7 +1,9 @@
 function TodoItem({ item, done, priority, onClick }) {
   return (
-    <li onClick={onClick}>
-      {done ? "✅" : "⬜"} [{priority}] {item}
+    <li className={`todo-item ${done ? "done" : ""}`} onClick={onClick}>
+      <span className="todo-check">{done ? "✅" : "⬜"}</span>
+      <span className="todo-text">{item}</span>
+      <span className={`priority ${priority}`}>{priority}</span>
     </li>
   );
 }

@@ -1,0 +1,158 @@
+.todo {
+  max-width: 520px;
+  margin: 24px auto;
+  padding: 28px;
+  text-align: left;
+  background: #1c1c1e;
+  border: 1px solid #2c2c2e;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  color: #e5e5e7;
+}
+
+.todo h2 {
+  color: #f5f5f7;
+  margin-bottom: 20px;
+}
+
+.todo-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.todo-form input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #3a3a3c;
+  border-radius: 8px;
+  font: inherit;
+  background: #2c2c2e;
+  color: #f5f5f7;
+  outline: none;
+}
+
+.todo-form input::placeholder {
+  color: #8e8e93;
+}
+
+.todo-form input:focus {
+  border-color: #8e8e93;
+}
+
+.todo-form select,
+.todo-form button {
+  padding: 10px 14px;
+  border: 1px solid #3a3a3c;
+  border-radius: 8px;
+  background: #2c2c2e;
+  color: #f5f5f7;
+  font: inherit;
+  cursor: pointer;
+}
+
+.todo-form button {
+  background: #f5f5f7;
+  color: #1c1c1e;
+  border-color: #f5f5f7;
+  font-weight: 500;
+}
+
+.todo-form button:hover {
+  background: #d1d1d6;
+}
+
+.todo-filter {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.todo-filter button {
+  padding: 6px 14px;
+  border: 1px solid #3a3a3c;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  color: #aeaeb2;
+}
+
+.todo-filter button.active {
+  background: #f5f5f7;
+  border-color: #f5f5f7;
+  color: #1c1c1e;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #2c2c2e;
+  border: 1px solid #3a3a3c;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.todo-item:hover {
+  background: #3a3a3c;
+  border-color: #48484a;
+}
+
+.todo-item.done {
+  background: #232325;
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: #6e6e73;
+}
+
+.todo-check {
+  font-size: 18px;
+  filter: grayscale(1);
+}
+
+.todo-text {
+  flex: 1;
+  color: #f5f5f7;
+}
+
+.priority {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+}
+
+.priority.HIGH {
+  background: #3a3a3c;
+  color: #f5f5f7;
+  border-color: #f5f5f7;
+}
+
+.priority.MEDIUM {
+  background: #2c2c2e;
+  color: #aeaeb2;
+  border-color: #8e8e93;
+}
+
+.priority.LOW {
+  background: #232325;
+  color: #6e6e73;
+  border-color: #48484a;
+}

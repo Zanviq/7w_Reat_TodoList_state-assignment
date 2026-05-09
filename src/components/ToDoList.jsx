@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TodoItem from "./ToDoItem";
+import "./Todo.css";
 
 function ToDoList({ sectionTitle, todos }) {
   const [todoList, setTodoList] = useState(todos);
@@ -34,14 +35,15 @@ function ToDoList({ sectionTitle, todos }) {
   });
 
   return (
-    <section>
+    <section className="todo">
       <h2>{sectionTitle}</h2>
 
-      <div>
+      <div className="todo-form">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && addTodo()}
           placeholder="할 일을 입력하세요"
         />
         <select value={priority} onChange={(e) => setPriority(e.target.value)}>
@@ -52,13 +54,28 @@ function ToDoList({ sectionTitle, todos }) {
         <button onClick={addTodo}>추가</button>
       </div>
 
-      <div>
-        <button onClick={() => setFilter("ALL")}>전체</button>
-        <button onClick={() => setFilter("DONE")}>완료</button>
-        <button onClick={() => setFilter("NOT_DONE")}>미완료</button>
+      <div className="todo-filter">
+        <button
+          className={filter === "ALL" ? "active" : ""}
+          onClick={() => setFilter("ALL")}
+        >
+          전체
+        </button>
+        <button
+          className={filter === "DONE" ? "active" : ""}
+          onClick={() => setFilter("DONE")}
+        >
+          완료
+        </button>
+        <button
+          className={filter === "NOT_DONE" ? "active" : ""}
+          onClick={() => setFilter("NOT_DONE")}
+        >
+          미완료
+        </button>
       </div>
 
-      <ul>
+      <ul className="todo-list">
         {filteredList.map((todo) => (
           <TodoItem
             key={todo.id}
