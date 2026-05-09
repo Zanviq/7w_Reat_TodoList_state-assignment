@@ -1,15 +1,7 @@
-function TodoItem({ item, done, onClick }) {
+function TodoItem({ item, done, priority, onClick }) {
   return (
-    <li
-      onClick={onClick}
-      style={{
-        cursor: "pointer",
-        textDecoration: done ? "line-through" : "none",
-        color: done ? "gray" : "black",
-        userSelect: "none",
-      }}
-    >
-      {done ? "✅" : "⬜"} {item}
+    <li onClick={onClick}>
+      {done ? "✅" : "⬜"} [{priority}] {item}
     </li>
   );
 }
