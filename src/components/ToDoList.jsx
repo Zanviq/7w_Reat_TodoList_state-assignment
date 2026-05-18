@@ -4,7 +4,7 @@ import "./Todo.css";
 
 const STORAGE_KEY = "todos";
 
-function ToDoList({ sectionTitle, todos }) {
+function ToDoList({ sectionTitle, todos, onlyActive = false }) {
   const [todoList, setTodoList] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -48,7 +48,11 @@ function ToDoList({ sectionTitle, todos }) {
     setInput("");
   };
 
-  const filteredList = todoList.filter((todo) => {
+  const baseList = onlyActive
+    ? todoList.filter((todo) => !todo.done)
+    : todoList;
+
+  const filteredList = baseList.filter((todo) => {
     if (filter === "DONE") return todo.done;
     if (filter === "NOT_DONE") return !todo.done;
     return true;
@@ -75,26 +79,28 @@ function ToDoList({ sectionTitle, todos }) {
         <button onClick={addTodo}>추가</button>
       </div>
 
-      <div className="todo-filter">
-        <button
-          className={filter === "ALL" ? "active" : ""}
-          onClick={() => setFilter("ALL")}
-        >
-          전체
-        </button>
-        <button
-          className={filter === "DONE" ? "active" : ""}
-          onClick={() => setFilter("DONE")}
-        >
-          완료
-        </button>
-        <button
-          className={filter === "NOT_DONE" ? "active" : ""}
-          onClick={() => setFilter("NOT_DONE")}
-        >
-          미완료
-        </button>
-      </div>
+      {!onlyActive && (
+        <div className="todo-filter">
+          <button
+            className={filter === "ALL" ? "active" : ""}
+            onClick={() => setFilter("ALL")}
+          >
+            전체
+          </button>
+          <button
+            className={filter === "DONE" ? "active" : ""}
+            onClick={() => setFilter("DONE")}
+          >
+            완료
+          </button>
+          <button
+            className={filter === "NOT_DONE" ? "active" : ""}
+            onClick={() => setFilter("NOT_DONE")}
+          >
+            미완료
+          </button>
+        </div>
+      )}
 
       <ul className="todo-list">
         {filteredList.map((todo) => (

@@ -1,13 +1,21 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ToDoHeader from "./components/ToDoHeader";
-import ToDoList from "./components/ToDoList";
-import { todos } from "./data/todos";
+import Navigation from "./components/Navigation";
+import HomePage from "./pages/HomePage";
+import ActivePage from "./pages/ActivePage";
+import ApiPage from "./pages/ApiPage";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <ToDoHeader title="ToDo List" />
-      <ToDoList sectionTitle="오늘 할 일" todos={todos} />
-    </>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/active" element={<ActivePage />} />
+        <Route path="/api" element={<ApiPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
