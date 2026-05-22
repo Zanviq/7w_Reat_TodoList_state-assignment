@@ -1,60 +1,64 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import TodoItem from "./ToDoItem";
+import { todoApi } from "../api/todoApi";
 import "./Todo.css";
 
-const STORAGE_KEY = "todos";
-
-function ToDoList({ sectionTitle, todos, onlyActive = false }) {
-  const [todoList, setTodoList] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return todos;
-  });
+function ToDoList({ sectionTitle, onlyActive = false }) {
+  const [todoList, setTodoList] = useState([]);
   const [input, setInput] = useState("");
-  const [priority, setPriority] = useState("MEDIUM");
   const [filter, setFilter] = useState("ALL");
-  const inputRef = useRef(null);
-
-  console.log("렌더링 input:", input);
 
   useEffect(() => {
-    inputRef.current?.focus();
+    const fetchTodos = async () => {
+      try {
+        const data = await todoApi.getTodos();
+        setTodoList(data);
+      } catch (err) {
+        console.error("목록 조회 실패:", err);
+      }
+    };
+    fetchTodos();
   }, []);
 
-  useEffect(() => {
-    console.log("localStorage 저장 실행:", todoList);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todoList));
-  }, [todoList]);
-
-  const toggleDone = (id) => {
-    setTodoList((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo,
-      ),
-    );
+  const handleAdd = async () => {
+    if (input.trim() === "") return;
+    try {
+      await todoApi.createTodo(input);
+      const data = await todoApi.getTodos();
+      setTodoList(data);
+      setInput("");
+    } catch (err) {
+      console.error("추가 실패:", err);
+    }
   };
 
-  const addTodo = () => {
-    if (input.trim() === "") return;
-    const newTodo = {
-      id: Date.now(),
-      item: input,
-      done: false,
-      priority: priority,
-    };
-    setTodoList([...todoList, newTodo]);
-    setInput("");
+  const handleToggle = async (id, completed) => {
+    try {
+      await todoApi.toggleTodo(id, !completed);
+      const data = await todoApi.getTodos();
+      setTodoList(data);
+    } catch (err) {
+      console.error("상태 변경 실패:", err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await todoApi.deleteTodo(id);
+      const data = await todoApi.getTodos();
+      setTodoList(data);
+    } catch (err) {
+      console.error("삭제 실패:", err);
+    }
   };
 
   const baseList = onlyActive
-    ? todoList.filter((todo) => !todo.done)
+    ? todoList.filter((todo) => !todo.completed)
     : todoList;
 
   const filteredList = baseList.filter((todo) => {
-    if (filter === "DONE") return todo.done;
-    if (filter === "NOT_DONE") return !todo.done;
+    if (filter === "DONE") return todo.completed;
+    if (filter === "NOT_DONE") return !todo.completed;
     return true;
   });
 
@@ -64,19 +68,13 @@ function ToDoList({ sectionTitle, todos, onlyActive = false }) {
 
       <div className="todo-form">
         <input
-          ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addTodo()}
+          onKeyDown={(e) => e.key === "Enter" && handleAdd()}
           placeholder="할 일을 입력하세요"
         />
-        <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-          <option value="HIGH">HIGH</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="LOW">LOW</option>
-        </select>
-        <button onClick={addTodo}>추가</button>
+        <button onClick={handleAdd}>추가</button>
       </div>
 
       {!onlyActive && (
@@ -106,10 +104,10 @@ function ToDoList({ sectionTitle, todos, onlyActive = false }) {
         {filteredList.map((todo) => (
           <TodoItem
             key={todo.id}
-            item={todo.item}
-            done={todo.done}
-            priority={todo.priority}
-            onClick={() => toggleDone(todo.id)}
+            content={todo.content}
+            completed={todo.completed}
+            onToggle={() => handleToggle(todo.id, todo.completed)}
+            onDelete={() => handleDelete(todo.id)}
           />
         ))}
       </ul>

@@ -101,9 +101,29 @@
   background: #2c2c2e;
   border: 1px solid #3a3a3c;
   border-radius: 10px;
-  cursor: pointer;
   user-select: none;
   transition: background 0.2s, border-color 0.2s;
+}
+
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.todo-delete {
+  padding: 6px 12px;
+  border: 1px solid #3a3a3c;
+  border-radius: 8px;
+  background: transparent;
+  color: #ff7b8a;
+  font: inherit;
+  cursor: pointer;
+}
+
+.todo-delete:hover {
+  background: #2d1f22;
+  border-color: #4a2f35;
 }
 
 .todo-item:hover {

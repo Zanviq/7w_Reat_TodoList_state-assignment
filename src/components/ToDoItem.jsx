@@ -1,9 +1,21 @@
-function TodoItem({ item, done, priority, onClick }) {
+function TodoItem({ content, completed, onToggle, onDelete }) {
   return (
-    <li className={`todo-item ${done ? "done" : ""}`} onClick={onClick}>
-      <span className="todo-check">{done ? "✅" : "⬜"}</span>
-      <span className="todo-text">{item}</span>
-      <span className={`priority ${priority}`}>{priority}</span>
+    <li className={`todo-item ${completed ? "done" : ""}`}>
+      <input
+        type="checkbox"
+        className="todo-checkbox"
+        checked={completed}
+        onChange={onToggle}
+      />
+      <span className="todo-text">{content}</span>
+      <button
+        type="button"
+        className="todo-delete"
+        onClick={onDelete}
+        aria-label="삭제"
+      >
+        삭제
+      </button>
     </li>
   );
 }
